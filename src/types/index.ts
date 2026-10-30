@@ -39,7 +39,7 @@ export interface Submission {
   created_at: string;
   updated_at: string;
   // Relasi tambahan saat di-join
-  author?: Pick<UserProfile, 'full_name' | 'email' | 'affiliation'>;
+  author?: Pick<UserProfile, 'full_name' | 'email' | 'affiliation' | 'orcid_id'>;
 }
 
 export interface ReviewAssignment {
