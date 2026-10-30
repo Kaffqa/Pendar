@@ -17,7 +17,7 @@ import {
   Calendar,
   ExternalLink,
 } from 'lucide-react';
-import type { ActivityLog } from '@/types';
+import type { ActivityLog, UserProfile } from '@/types';
 
 export default function AdminAuditLogPage() {
   const { user } = useAuth();
@@ -34,20 +34,32 @@ export default function AdminAuditLogPage() {
       setIsLoading(true);
 
       try {
-        const { data, error } = await supabase
+        const { data: logsData, error } = await supabase
           .from('activity_log')
-          .select(`
-            *,
-            actor:users_profile!actor_id (
-              full_name,
-              email
-            )
-          `)
+          .select('*')
           .order('created_at', { ascending: false })
           .limit(100);
 
         if (error) throw error;
-        setLogs((data as ActivityLog[]) || []);
+
+        const rawLogs = (logsData as ActivityLog[]) || [];
+        const actorIds = [...new Set(rawLogs.map((l) => l.actor_id).filter(Boolean))] as string[];
+
+        if (actorIds.length > 0) {
+          const { data: actorsData } = await supabase
+            .from('users_profile')
+            .select('id, full_name, email')
+            .in('id', actorIds);
+
+          const actorMap = new Map((actorsData || []).map((a) => [a.id, a]));
+          const combined = rawLogs.map((l) => ({
+            ...l,
+            actor: l.actor_id ? actorMap.get(l.actor_id) as Pick<UserProfile, 'full_name' | 'email'> : undefined,
+          }));
+          setLogs(combined);
+        } else {
+          setLogs(rawLogs);
+        }
       } catch (err) {
         console.error('Gagal memuat audit log:', err);
       } finally {

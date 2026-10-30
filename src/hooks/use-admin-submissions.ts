@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/hooks/use-auth';
-import type { Submission } from '@/types';
+import type { Submission, UserProfile } from '@/types';
 
 export function useAdminSubmissions() {
   const { user } = useAuth();
@@ -20,22 +20,38 @@ export function useAdminSubmissions() {
     setError(null);
 
     try {
-      // Admin berhak membaca semua naskah beserta data profil author
-      const { data, error } = await supabase
+      // 1. Ambil seluruh data submisi
+      const { data: subsData, error: subsError } = await supabase
         .from('submissions')
-        .select(`
-          *,
-          author:users_profile!author_id (
-            full_name,
-            email,
-            affiliation
-          )
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (subsError) throw subsError;
 
-      setSubmissions((data as Submission[]) || []);
+      const rawSubmissions = (subsData as Submission[]) || [];
+
+      if (rawSubmissions.length === 0) {
+        setSubmissions([]);
+        setIsLoading(false);
+        return;
+      }
+
+      // 2. Ambil profil penulis yang terkait
+      const authorIds = [...new Set(rawSubmissions.map((s) => s.author_id))];
+      const { data: profilesData } = await supabase
+        .from('users_profile')
+        .select('id, full_name, email, affiliation')
+        .in('id', authorIds);
+
+      const profileMap = new Map((profilesData || []).map((p) => [p.id, p]));
+
+      // 3. Gabungkan data naskah dengan profil penulis
+      const combined = rawSubmissions.map((sub) => ({
+        ...sub,
+        author: profileMap.get(sub.author_id) as Pick<UserProfile, 'full_name' | 'email' | 'affiliation'> || undefined,
+      }));
+
+      setSubmissions(combined);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Gagal memuat naskah redaksi.';
       setError(msg);
@@ -49,7 +65,7 @@ export function useAdminSubmissions() {
 
     if (!user) return;
 
-    // Realtime subscription untuk mendengarkan perubahan pada seluruh naskah
+    // Realtime subscription untuk mendengarkan perubahan naskah
     const channel = supabase
       .channel('admin-all-submissions')
       .on(

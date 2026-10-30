@@ -79,18 +79,10 @@ export default function AdminDetailNaskahPage({
     setErrorMsg(null);
 
     try {
-      // 1. Ambil data submission + author
+      // 1. Ambil data submission
       const { data: subData, error: subError } = await supabase
         .from('submissions')
-        .select(`
-          *,
-          author:users_profile!author_id (
-            full_name,
-            email,
-            affiliation,
-            orcid_id
-          )
-        `)
+        .select('*')
         .eq('id', submissionId)
         .single();
 
@@ -98,24 +90,34 @@ export default function AdminDetailNaskahPage({
         throw new Error('Naskah tidak ditemukan.');
       }
 
-      setSubmission(subData as Submission);
+      // Ambil data profil penulis
+      const { data: authorData } = await supabase
+        .from('users_profile')
+        .select('full_name, email, affiliation, orcid_id')
+        .eq('id', subData.author_id)
+        .single();
+
+      setSubmission({
+        ...(subData as Submission),
+        author: authorData || undefined,
+      });
 
       // 2. Ambil seluruh penugasan reviewer untuk naskah ini
       const { data: assignData } = await supabase
         .from('review_assignments')
-        .select(`
-          *,
-          reviewer:users_profile!reviewer_id (
-            id,
-            full_name,
-            email,
-            expertise_keywords
-          )
-        `)
+        .select('*')
         .eq('submission_id', submissionId)
         .order('created_at', { ascending: false });
 
-      if (assignData) {
+      if (assignData && assignData.length > 0) {
+        const reviewerIds = [...new Set(assignData.map((a) => a.reviewer_id))];
+        const { data: reviewersData } = await supabase
+          .from('users_profile')
+          .select('id, full_name, email, expertise_keywords')
+          .in('id', reviewerIds);
+
+        const reviewerMap = new Map((reviewersData || []).map((r) => [r.id, r]));
+
         // Ambil rubrik untuk setiap assignment yang berstatus completed
         const extendedList: ExtendedAssignment[] = [];
         for (const a of assignData) {
@@ -128,9 +130,15 @@ export default function AdminDetailNaskahPage({
               .single();
             rubricObj = (rub as ReviewRubric) || null;
           }
-          extendedList.push({ ...a, rubric: rubricObj });
+          extendedList.push({
+            ...a,
+            reviewer: reviewerMap.get(a.reviewer_id) as Pick<UserProfile, 'id' | 'full_name' | 'email' | 'expertise_keywords'> || undefined,
+            rubric: rubricObj,
+          });
         }
         setAssignments(extendedList);
+      } else {
+        setAssignments([]);
       }
 
       // 3. Ambil daftar calon reviewer yang tersedia di sistem
