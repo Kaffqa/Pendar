@@ -90,19 +90,16 @@ export function useReviewerAssignments() {
 
       if (error) throw error;
 
-      // Update status naskah di submissions menjadi under_review
-      await supabase
-        .from('submissions')
-        .update({ status: 'under_review' })
-        .eq('id', submissionId);
-
-      // Log ke activity_log
-      await supabase.from('activity_log').insert({
-        submission_id: submissionId,
-        actor_id: user.id,
-        actor_type: 'user',
-        action: 'REVIEWER_ACCEPTED',
-        details: { assignment_id: assignmentId },
+      // Update status naskah di submissions menjadi under_review via secure API (bypassing RLS)
+      await fetch('/api/submissions/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          submissionId,
+          status: 'under_review',
+          action: 'REVIEWER_ACCEPTED',
+          details: { assignment_id: assignmentId },
+        }),
       });
 
       await fetchAssignments();

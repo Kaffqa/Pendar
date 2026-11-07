@@ -1,0 +1,37 @@
+%PDF-1.4
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
+4 0 obj << /Length 1472 >> stream
+BT /F1 14 Tf 50 760 Td (Optimasi Penjadwalan Tugas Cloud Menggunakan Algoritma Genetika) Tj ET
+BT /F1 10 Tf 50 720 Td (Penulis: Dr. Budi Santoso, Laboratorium Komputasi Awan UI) Tj ET
+BT /F1 10 Tf 50 702 Td (Kontak: budi.santoso@ui.ac.id | Departemen Ilmu Komputer UI Depok) Tj ET
+BT /F1 10 Tf 50 670 Td (ABSTRAK) Tj ET
+BT /F1 10 Tf 50 652 Td (Penelitian ini mengusulkan algoritma genetika hibrida untuk optimasi alokasi) Tj ET
+BT /F1 10 Tf 50 634 Td (sumber daya cloud computing di Universitas Indonesia. Eksperimen di lab UI) Tj ET
+BT /F1 10 Tf 50 616 Td (menunjukkan penghematan latensi sebesar 24 persen dibanding algoritma standar.) Tj ET
+BT /F1 10 Tf 50 598 Td (Kata Kunci: Cloud Computing, Algoritma Genetika, Penjadwalan, UI Depok) Tj ET
+BT /F1 10 Tf 50 566 Td (1. PENDAHULUAN) Tj ET
+BT /F1 10 Tf 50 548 Td (Kebutuhan komputasi awan meningkat drastis seiring perkembangan machine learning.) Tj ET
+BT /F1 10 Tf 50 530 Td (Kami mengembangkan sistem ini di kampus UI untuk mendukung ribuan node server.) Tj ET
+BT /F1 10 Tf 50 498 Td (2. METODOLOGI & EKSPERIMEN) Tj ET
+BT /F1 10 Tf 50 480 Td (Dataset pengujian diambil dari log server UI selama periode Januari-Maret 2026.) Tj ET
+BT /F1 10 Tf 50 462 Td (Algoritma dioptimalkan dengan pembobotan fitness multi-objektif.) Tj ET
+BT /F1 10 Tf 50 430 Td (UCAPAN TERIMA KASIH \(ACKNOWLEDGMENTS\)) Tj ET
+BT /F1 10 Tf 50 412 Td (Penulis mengucapkan terima kasih kepada Rektor UI atas fasilitas komputasi superkomputer.) Tj ET
+
+endstream
+endobj
+5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
+xref
+0 6
+0000000000 65535 f 
+0000000000 00000 n 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+trailer << /Size 6 /Root 1 0 R >>
+startxref
+1835
+%%EOF

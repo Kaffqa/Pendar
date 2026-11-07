@@ -1,0 +1,41 @@
+%PDF-1.4
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
+4 0 obj << /Length 1895 >> stream
+BT /F1 14 Tf 50 760 Td (Optimasi Penjadwalan Tugas Cloud Menggunakan Algoritma Genetika) Tj ET
+BT /F1 10 Tf 50 720 Td (Naskah Anonim \(Double-Blind Peer Review Copy - Bebas Identitas\)) Tj ET
+BT /F1 10 Tf 50 688 Td (ABSTRAK) Tj ET
+BT /F1 10 Tf 50 670 Td (Penelitian ini mengusulkan algoritma genetika hibrida untuk optimasi alokasi) Tj ET
+BT /F1 10 Tf 50 652 Td (sumber daya cloud computing berskala besar. Model multi-objektif dirancang untuk) Tj ET
+BT /F1 10 Tf 50 634 Td (meminimalkan makespan dan konsumsi energi pusat data. Hasil eksperimen simulasi) Tj ET
+BT /F1 10 Tf 50 616 Td (menunjukkan penghematan latensi hingga 24.3 persen dibanding algoritma round-robin.) Tj ET
+BT /F1 10 Tf 50 598 Td (Kata Kunci: Cloud Computing, Algoritma Genetika, Optimasi Penjadwalan, Makespan) Tj ET
+BT /F1 10 Tf 50 566 Td (1. PENDAHULUAN) Tj ET
+BT /F1 10 Tf 50 548 Td (Efisiensi alokasi beban kerja pada infrastruktur awan terdistribusi menjadi tantangan) Tj ET
+BT /F1 10 Tf 50 530 Td (kritis dalam sistem komputasi modern. Keterlambatan respon antrean seringkali) Tj ET
+BT /F1 10 Tf 50 512 Td (disebabkan oleh distribusi komputasi yang tidak seimbang antar node.) Tj ET
+BT /F1 10 Tf 50 480 Td (2. METODOLOGI PENELITIAN) Tj ET
+BT /F1 10 Tf 50 462 Td (Formulasi matematika disusun menggunakan representasi kromosom berbasis urutan tugas.) Tj ET
+BT /F1 10 Tf 50 444 Td (Operator mutasi adaptif diimplementasikan untuk mencegah konvergensi dini.) Tj ET
+BT /F1 10 Tf 50 412 Td (3. HASIL DAN PEMBAHASAN) Tj ET
+BT /F1 10 Tf 50 394 Td (Pengujian simulasi dilakukan terhadap 1000 tugas dengan 50 unit virtual machine.) Tj ET
+BT /F1 10 Tf 50 376 Td (Algoritma yang diusulkan menghasilkan konvergensi optimal pada generasi ke-45.) Tj ET
+BT /F1 10 Tf 50 344 Td (4. KESIMPULAN) Tj ET
+BT /F1 10 Tf 50 326 Td (Pendekatan hibrida terbukti efektif meningkatkan efisiensi penjadwalan tanpa beban komputasi berlebih.) Tj ET
+
+endstream
+endobj
+5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
+xref
+0 6
+0000000000 65535 f 
+0000000000 00000 n 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+trailer << /Size 6 /Root 1 0 R >>
+startxref
+2258
+%%EOF

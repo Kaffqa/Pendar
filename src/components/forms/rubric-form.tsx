@@ -190,31 +190,21 @@ export function RubricForm({
 
       if (errAssign) throw errAssign;
 
-      // 4. Update status submission jika rekomendasi memerlukan revisi
-      const newSubStatus =
-        recommendation === 'accept'
-          ? 'under_review'
-          : recommendation === 'minor_revision' || recommendation === 'major_revision'
-          ? 'revision_needed'
-          : 'under_review';
-
-      await supabase
-        .from('submissions')
-        .update({ status: newSubStatus })
-        .eq('id', submissionId);
-
-      // 5. Catat ke activity_log
-      await supabase.from('activity_log').insert({
-        submission_id: submissionId,
-        actor_id: user.id,
-        actor_type: 'user',
-        action: 'REVIEW_COMPLETED',
-        details: {
-          assignment_id: assignmentId,
-          average_score: calculateAverage(),
-          recommendation,
-          has_pdf_attachment: !!rawPdfPath,
-        },
+      // 4. Update status submission menjadi 'under_review' dan catat ke activity_log via secure endpoint
+      await fetch('/api/submissions/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          submissionId,
+          status: 'under_review',
+          action: 'REVIEW_COMPLETED',
+          details: {
+            assignment_id: assignmentId,
+            average_score: calculateAverage(),
+            recommendation,
+            has_pdf_attachment: !!rawPdfPath,
+          },
+        }),
       });
 
       router.push('/peninjau?evaluated=true');

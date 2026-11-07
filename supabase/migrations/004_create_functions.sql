@@ -103,3 +103,23 @@ BEGIN
   RETURN v_log_id;
 END;
 $$;
+
+-- 4. Otomatisasi pembaruan status naskah saat penugasan reviewer berubah
+CREATE OR REPLACE FUNCTION public.handle_reviewer_assignment_status()
+RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$
+BEGIN
+  -- Saat reviewer menerima tugas atau menyelesaikan rubrik, pastikan status naskah 'under_review'
+  IF NEW.status IN ('accepted', 'completed') THEN
+    UPDATE public.submissions
+    SET status = 'under_review', updated_at = now()
+    WHERE id = NEW.submission_id AND status IN ('submitted', 'waiting_for_reviewer');
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_reviewer_assignment_status ON public.review_assignments;
+CREATE TRIGGER trg_reviewer_assignment_status
+AFTER INSERT OR UPDATE OF status ON public.review_assignments
+FOR EACH ROW EXECUTE FUNCTION public.handle_reviewer_assignment_status();
