@@ -570,16 +570,33 @@ export default function AdminDetailNaskahPage({
                       )}
 
                       {/* Lampiran PDF Coretan Reviewer */}
-                      {a.rubric.raw_review_pdf_url && (
-                        <button
-                          type="button"
-                          onClick={() => handleDownload(STORAGE_BUCKETS.REVIEW_FILES, a.rubric!.raw_review_pdf_url!)}
-                          className="inline-flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-800 underline font-medium"
-                        >
-                          <Download className="w-3.5 h-3.5" />
-                          <span>Unduh PDF Anotasi Reviewer</span>
-                        </button>
-                      )}
+                      <div className="flex flex-wrap items-center gap-4 pt-1">
+                        {a.rubric.raw_review_pdf_url && (
+                          <button
+                            type="button"
+                            onClick={() => handleDownload(STORAGE_BUCKETS.REVIEW_FILES, a.rubric!.raw_review_pdf_url!)}
+                            className="inline-flex items-center gap-1.5 text-xs text-slate-600 hover:text-slate-900 underline font-medium"
+                          >
+                            <Download className="w-3.5 h-3.5" />
+                            <span>Unduh PDF Mentah Reviewer (review-files)</span>
+                          </button>
+                        )}
+
+                        {a.rubric.clean_review_pdf_url ? (
+                          <button
+                            type="button"
+                            onClick={() => handleDownload(STORAGE_BUCKETS.CLEAN_REVIEWS, a.rubric!.clean_review_pdf_url!)}
+                            className="inline-flex items-center gap-1.5 text-xs text-emerald-600 hover:text-emerald-800 underline font-semibold"
+                          >
+                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>Unduh PDF Bersih Metadata (clean-reviews)</span>
+                          </button>
+                        ) : (
+                          <span className="text-[11px] text-slate-400 italic">
+                            (Sedang/belum disanitasi n8n)
+                          </span>
+                        )}
+                      </div>
                     </div>
                   ) : (
                     <div className="text-xs text-slate-500 italic">
