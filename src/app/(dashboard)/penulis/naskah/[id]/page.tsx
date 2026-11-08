@@ -111,9 +111,10 @@ export default function DetailNaskahPenulisPage({
   }, [user, submissionId, supabase]);
 
   // Fungsi membuat signed URL untuk mengunduh berkas privat
-  const handleDownloadFile = async (bucket: string, path: string, filename: string) => {
+  const handleDownloadFile = async (bucket: string, rawPath: string, filename: string) => {
     try {
-      const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, 60);
+      const cleanPath = rawPath.startsWith(`${bucket}/`) ? rawPath.slice(bucket.length + 1) : rawPath;
+      const { data, error } = await supabase.storage.from(bucket).createSignedUrl(cleanPath, 60);
       if (error || !data) {
         alert('Gagal membuat tautan unduh berkas: ' + (error?.message || 'Error'));
         return;
